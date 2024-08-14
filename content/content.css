@@ -1,0 +1,92 @@
+/* ------------------------ */
+/* Feature: Large Card View */
+/* ------------------------ */
+[bttr-large-cards] #layer-manager-card-back [data-elevation="1"] {
+  width: calc(100% - 96px);
+}
+
+[bttr-large-cards] #layer-manager-card-back [role="dialog"] {
+  width: 100%;
+}
+
+[bttr-large-cards] #layer-manager-card-back .window-main-col {
+  width: 80%;
+  box-sizing: border-box;
+}
+
+[bttr-large-cards] #layer-manager-card-back .window-sidebar {
+  width: 20%;
+  box-sizing: border-box;
+}
+
+/* ---------------------- */
+/* Feature: Topbar Hidden */
+/* ---------------------- */
+[bttr-hide-topbar] div[data-testid="header-container"] {
+  z-index: 10;
+  position: absolute;
+  top: -48px;
+  right: 0;
+  left: 0;
+  border-bottom: 10px solid transparent;
+  transition: all 0.2s ease;
+}
+
+[bttr-hide-topbar] div[data-testid="header-container"]:hover {
+  top: 0;
+}
+
+/* ------------------- */
+/* Feature: List Width */
+/* ------------------- */
+
+body {
+  --list-width: data("bttr-list-width");
+}
+
+[bttr-list-width] #board > li > div {
+  width: var(--list-width, 272px);
+}
+
+/* --------------------- */
+/* Feature: Show Card Id */
+/* --------------------- */
+[bttr-card-id] span.card-id {
+  opacity: 0.65;
+  margin-right: 6px;
+}
+
+/* ------------------------ */
+/* Feature: Markdown Editor */
+/* ------------------------ */
+[bttr-legacy-markdown] .description-edit > div:has(> section) {
+  display: none !important;
+}
+
+[bttr-legacy-markdown] .js-desc-editor {
+  display: none !important;
+}
+
+[bttr-legacy-markdown] .js-readonly-markdown {
+  display: block !important;
+  padding: 0px !important;
+  border: unset !important;
+  margin-bottom: 4px !important;
+}
+
+[bttr-legacy-markdown] .js-readonly-markdown > button {
+  display: none !important;
+}
+
+[bttr-legacy-markdown] .js-readonly-markdown > textarea.card-description {
+  color: var(--ds-text, #172b4d) !important;
+  font-display: swap !important;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif !important;
+  background: var(--ds-background-input, #ffffff) !important;
+  border-color: var(--ds-border-focused, #388bff) !important;
+  box-shadow: inset 0 0 0 2px var(--ds-border-focused, #388bff) !important;
+  padding: 8px 12px !important;
+  border-radius: 3px !important;
+  line-height: 20px !important;
+}
