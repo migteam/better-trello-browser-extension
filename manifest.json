@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "1.1",
+  "version": "1.2",
   "name": "Better Trello",
   "permissions": [
     "activeTab",
@@ -32,7 +32,8 @@
   ],
   "icons": {
     "16": "public/icon/icon_16.png",
-    "48": "public/icon/icon_48.png"
+    "48": "public/icon/icon_48.png",
+    "128": "public/icon/icon.png"
   },
   "browser_specific_settings": {
     "gecko": {
