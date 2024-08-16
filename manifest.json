@@ -33,5 +33,10 @@
   "icons": {
     "16": "public/icon/icon_16.png",
     "48": "public/icon/icon_48.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{dbfb9b3b-0d82-4f43-989e-85d3bbf714de}"
+    }
   }
 }
