@@ -63,9 +63,9 @@ function Popup() {
           </label>
 
           <Switch
-            defaultChecked={storageSyncQuery.data?.showCardId}
+            defaultChecked={storageSyncQuery.data?.autoHideTopBar}
             onCheckedChange={(checked) => {
-              browser.storage.sync.set({ showCardId: checked });
+              browser.storage.sync.set({ autoHideTopBar: checked });
             }}
           />
         </div>
@@ -76,9 +76,9 @@ function Popup() {
           </label>
 
           <Switch
-            defaultChecked={storageSyncQuery.data?.autoHideTopBar}
+            defaultChecked={storageSyncQuery.data?.showCardId}
             onCheckedChange={(checked) => {
-              browser.storage.sync.set({ autoHideTopBar: checked });
+              browser.storage.sync.set({ showCardId: checked });
             }}
           />
         </div>
