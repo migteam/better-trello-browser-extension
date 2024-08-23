@@ -51,14 +51,16 @@ function addOnChangeStorageListener() {
 
     if (changes.showCardId) {
       if (changes.showCardId.newValue) {
-        document.body.setAttribute("bttr-card-id", "");
+        document.body.setAttribute("bttr-show-card-id", "");
 
         showCardId();
 
         const observer = new MutationObserver((mutationsList) => {
           for (let mutation of mutationsList) {
             if (mutation.type === "childList") {
-              showCardId();
+              if (mutation.addedNodes.length > 0) {
+                showCardId();
+              }
             }
           }
         });
@@ -70,7 +72,7 @@ function addOnChangeStorageListener() {
           })
         );
       } else {
-        document.body.removeAttribute("bttr-card-id");
+        document.body.removeAttribute("bttr-show-card-id");
         document.querySelectorAll(".card-id").forEach((element) => {
           element.parentElement?.removeAttribute("bttr-card-id");
           element.remove();
@@ -96,7 +98,7 @@ async function initBodyAttributes() {
   }
 
   if (storageSync.showCardId) {
-    document.body.setAttribute("bttr-card-id", "");
+    document.body.setAttribute("bttr-show-card-id", "");
   }
 }
 
@@ -113,7 +115,9 @@ async function initial() {
     const observer = new MutationObserver((mutationsList) => {
       for (let mutation of mutationsList) {
         if (mutation.type === "childList") {
-          showCardId();
+          if (mutation.addedNodes.length > 0) {
+            showCardId();
+          }
         }
       }
     });

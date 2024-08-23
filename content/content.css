@@ -51,7 +51,7 @@ body {
 /* --------------------- */
 /* Feature: Show Card Id */
 /* --------------------- */
-[bttr-card-id] span.card-id {
+[bttr-show-card-id] span.card-id {
   opacity: 0.65;
   margin-right: 6px;
 }

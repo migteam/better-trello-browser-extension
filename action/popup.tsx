@@ -93,6 +93,7 @@ function Popup() {
           <a
             href="https://github.com/migteam/better-trello-browser-extension/issues/new"
             className="hover:underline underline-offset-4"
+            target="_blank"
           >
             🐛 Report an issue
           </a>
