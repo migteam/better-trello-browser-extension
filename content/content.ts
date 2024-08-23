@@ -1,6 +1,7 @@
 import { StorageSync, storageSyncKeys } from "../queries/storage";
 
 setTimeout(initBodyAttributes, 500);
+setTimeout(addOnChangeStorageListener, 500);
 setTimeout(initial, 1500);
 
 let browser: typeof chrome;
@@ -15,6 +16,68 @@ async function getStorageSync() {
   )) as StorageSync;
 
   return storageSync;
+}
+
+function addOnChangeStorageListener() {
+  if (typeof browser === "undefined") {
+    browser = chrome;
+  }
+
+  browser.storage.onChanged.addListener((changes) => {
+    if (changes.largeCardBack) {
+      if (changes.largeCardBack.newValue) {
+        document.body.setAttribute("bttr-large-cards", "");
+      } else {
+        document.body.removeAttribute("bttr-large-cards");
+      }
+    }
+
+    if (changes.autoHideTopBar) {
+      if (changes.autoHideTopBar.newValue) {
+        document.body.setAttribute("bttr-hide-topbar", "");
+      } else {
+        document.body.removeAttribute("bttr-hide-topbar");
+      }
+    }
+
+    if (changes.useLegacyMarkdownEditor) {
+      if (changes.useLegacyMarkdownEditor.newValue) {
+        document.body.setAttribute("bttr-legacy-markdown", "");
+        useLegacyMarkdownEditor();
+      } else {
+        document.body.removeAttribute("bttr-legacy-markdown");
+      }
+    }
+
+    if (changes.showCardId) {
+      if (changes.showCardId.newValue) {
+        document.body.setAttribute("bttr-card-id", "");
+
+        showCardId();
+
+        const observer = new MutationObserver((mutationsList) => {
+          for (let mutation of mutationsList) {
+            if (mutation.type === "childList") {
+              showCardId();
+            }
+          }
+        });
+
+        document.querySelectorAll("[data-testid=list-cards]").forEach((node) =>
+          observer.observe(node, {
+            childList: true,
+            subtree: true,
+          })
+        );
+      } else {
+        document.body.removeAttribute("bttr-card-id");
+        document.querySelectorAll(".card-id").forEach((element) => {
+          element.parentElement?.removeAttribute("bttr-card-id");
+          element.remove();
+        });
+      }
+    }
+  });
 }
 
 async function initBodyAttributes() {
@@ -46,6 +109,21 @@ async function initial() {
 
   if (storageSync.showCardId) {
     showCardId();
+
+    const observer = new MutationObserver((mutationsList) => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === "childList") {
+          showCardId();
+        }
+      }
+    });
+
+    document.querySelectorAll("[data-testid=list-cards]").forEach((node) =>
+      observer.observe(node, {
+        childList: true,
+        subtree: true,
+      })
+    );
   }
 }
 
@@ -83,7 +161,9 @@ function useLegacyMarkdownEditor() {
 }
 
 function showCardId() {
-  const anchors = document.querySelectorAll('a[data-testid="card-name"]');
+  const anchors = document.querySelectorAll(
+    'a[data-testid="card-name"]:not([bttr-card-id])'
+  );
 
   anchors.forEach((anchor) => {
     const href = anchor.getAttribute("href");
@@ -96,6 +176,7 @@ function showCardId() {
       span.className = "card-id";
       span.textContent = `#${id}`;
 
+      anchor.setAttribute("bttr-card-id", id);
       anchor.prepend(span);
     }
   });
