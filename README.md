@@ -1,37 +1,38 @@
-# better-trello-browser-extension
+# Better Trello 🚀
 
-> This project was bootstrapped using the Extension.js React-TypeScript template.
+Welcome to the **Better Trello** repository! This browser extension is designed to enhance Trello user experience by providing a range of UI/UX improvements.
 
-## Scripts Available
+![Extension preview](https://addons.mozilla.org/user-media/previews/full/303/303839.png?modified=1723811206)
 
-In the project directory, you can run:
+## Supported features
 
-### npm dev
+- **Larger Card View:** View more content on your cards with an expanded card size.
+- **Visible Card IDs:** Quickly reference cards with visible IDs on each card.
+- **Legacy Markdown Editor:** Switch back to the classic Markdown editor for a more streamlined editing experience.
+- **Hide Top Bar:** Clean up your workspace by hiding the top navigation bar.
 
-```
-// Runs the app in the development mode.
-// Will open a new browser instance with your extension loaded.
-// The page will reload when you make changes.
-npm dev
-```
+## Installation
 
-### npm start
+### Google Chrome, Microsoft Edge, Opera and other Chromium-based browser
 
-```
-// Runs the app in the production mode.
-// Will open a new browser instance with your extension loaded.
-// This is how your browser extension will work once published.
-npm start
-```
+https://chromewebstore.google.com/detail/better-trello/dnhdnenpngcecekbhklemaidbdpibiae
 
-### npm build
+### Firefox
 
-```
-// Builds the app for production.
-// Bundles your browser extension in production mode for the target browser.
-npm run build
-```
+https://addons.mozilla.org/en/firefox/addon/better-trello/
 
-## Learn More
+## Usage
 
-You can learn more in the [Extension.js](https://extension.js.org) documentation.
+Once installed, the extension will automatically apply the enhancements to your Trello boards. You can adjust settings via the extension options to customize your experience.
+
+## Contributing
+
+We welcome contributions! If you have an idea or find a bug, feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you encounter any issues or have questions, please open an issue in the repository.
