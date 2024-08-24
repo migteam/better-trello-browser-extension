@@ -25,14 +25,14 @@ function Popup() {
 
   if (storageSyncQuery.isLoading) {
     return (
-      <div className="w-72 min-h-4 dark:bg-gray-800 flex flex-col justify-center items-center">
+      <div className="w-96 min-h-4 dark:bg-gray-800 flex flex-col justify-center items-center">
         <Logo className="w-6 h-6" />
       </div>
     );
   }
 
   return (
-    <div className="w-72 min-h-48 dark:bg-gray-800 flex flex-col">
+    <div className="w-96 min-h-48 dark:bg-gray-800 flex flex-col">
       <header className="flex items-center w-full p-3 bg-gray-50 dark:bg-gray-900">
         <Logo className="w-6 h-6" />
 
@@ -168,6 +168,14 @@ function Popup() {
             target="_blank"
           >
             🐛 Report an issue
+          </a>
+          <span>·</span>
+          <a
+            href="https://github.com/sponsors/sewerynkalemba"
+            className="hover:underline underline-offset-4"
+            target="_blank"
+          >
+            💖 Buy me a coffee
           </a>
         </small>
       </div>
