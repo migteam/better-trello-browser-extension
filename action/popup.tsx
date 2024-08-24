@@ -171,7 +171,7 @@ function Popup() {
           </a>
           <span>·</span>
           <a
-            href="https://github.com/sponsors/sewerynkalemba"
+            href="https://ko-fi.com/sewerynkalemba"
             className="hover:underline underline-offset-4"
             target="_blank"
           >
