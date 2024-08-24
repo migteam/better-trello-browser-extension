@@ -2,11 +2,13 @@
 /* Feature: Large Card View */
 /* ------------------------ */
 [bttr-large-cards] #layer-manager-card-back [data-elevation="1"] {
-  width: calc(100% - 96px);
+  max-width: calc(100% - 96px);
 }
 
 [bttr-large-cards] #layer-manager-card-back [role="dialog"] {
-  width: 100%;
+  width: var(--bttr-card-width, 1024px);
+  min-width: 1024px;
+  max-width: 100%;
 }
 
 [bttr-large-cards] #layer-manager-card-back .window-main-col {
@@ -17,6 +19,11 @@
 [bttr-large-cards] #layer-manager-card-back .window-sidebar {
   width: 20%;
   box-sizing: border-box;
+}
+
+[bttr-large-cards] .card-detail-window .button-link-container,
+[bttr-large-cards] .card-detail-window .button-link {
+  max-width: unset;
 }
 
 /* ---------------------- */
@@ -39,11 +46,6 @@
 /* ------------------- */
 /* Feature: List Width */
 /* ------------------- */
-
-body {
-  --list-width: data("bttr-list-width");
-}
-
 [bttr-list-width] #board > li > div {
   width: var(--list-width, 272px);
 }

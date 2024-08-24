@@ -1,7 +1,16 @@
 import Logo from "../components/logo";
 import React from "react";
 import { useStorageSyncQuery } from "../queries/storage";
+
 import { Switch } from "../components/switch";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../components/accordion";
+import { Label } from "../components/label";
+import { Input } from "../components/input";
 
 import manifest from "../manifest.json";
 
@@ -16,7 +25,7 @@ function Popup() {
 
   if (storageSyncQuery.isLoading) {
     return (
-      <div className="w-72 min-h-48 dark:bg-gray-800 flex flex-col justify-center items-center">
+      <div className="w-72 min-h-4 dark:bg-gray-800 flex flex-col justify-center items-center">
         <Logo className="w-6 h-6" />
       </div>
     );
@@ -24,7 +33,7 @@ function Popup() {
 
   return (
     <div className="w-72 min-h-48 dark:bg-gray-800 flex flex-col">
-      <header className="flex items-center w-full p-3 dark:bg-gray-900">
+      <header className="flex items-center w-full p-3 bg-gray-50 dark:bg-gray-900">
         <Logo className="w-6 h-6" />
 
         <h1 className="text-base font-bold ml-3 leading-none dark:text-white">
@@ -34,18 +43,43 @@ function Popup() {
 
       <div className="p-3">
         <fieldset className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <label className="dark:text-white text-sm leading-none pr-2">
-              Enlargen Card View
-            </label>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="large-card">
+              <AccordionTrigger>
+                <label className="dark:text-white text-sm leading-none pr-2">
+                  Enlarge Card View
+                </label>
 
-            <Switch
-              defaultChecked={storageSyncQuery.data?.largeCardBack}
-              onCheckedChange={(checked) => {
-                browser.storage.sync.set({ largeCardBack: checked });
-              }}
-            />
-          </div>
+                <Switch
+                  className="ml-auto"
+                  defaultChecked={storageSyncQuery.data?.largeCardBack}
+                  onCheckedChange={(checked) => {
+                    browser.storage.sync.set({ largeCardBack: checked });
+                  }}
+                  onClick={(event) => event.stopPropagation()}
+                />
+              </AccordionTrigger>
+
+              <AccordionContent>
+                <fieldset className=" flex flex-col">
+                  <div className="flex flex-col gap-2">
+                    <Label>Card back width (px)</Label>
+
+                    <Input
+                      type="number"
+                      placeholder="1024"
+                      defaultValue={storageSyncQuery.data?.largeCardWidth}
+                      onChange={(event) => {
+                        browser.storage.sync.set({
+                          largeCardWidth: event.target.value,
+                        });
+                      }}
+                    />
+                  </div>
+                </fieldset>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
           <div className="flex items-center justify-between">
             <label className="dark:text-white text-sm leading-none pr-2">
@@ -75,7 +109,7 @@ function Popup() {
 
           <div className="flex items-center justify-between">
             <label className="dark:text-white text-sm leading-none pr-2">
-              Show Card Id
+              Show Card ID
             </label>
 
             <Switch

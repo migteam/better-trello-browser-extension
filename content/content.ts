@@ -18,10 +18,12 @@ async function getStorageSync() {
   return storageSync;
 }
 
-function addOnChangeStorageListener() {
+async function addOnChangeStorageListener() {
   if (typeof browser === "undefined") {
     browser = chrome;
   }
+
+  const storageSync = await getStorageSync();
 
   browser.storage.onChanged.addListener((changes) => {
     if (changes.largeCardBack) {
@@ -29,6 +31,15 @@ function addOnChangeStorageListener() {
         document.body.setAttribute("bttr-large-cards", "");
       } else {
         document.body.removeAttribute("bttr-large-cards");
+      }
+    }
+
+    if (changes.largeCardWidth) {
+      if (changes.largeCardWidth.newValue) {
+        document.body.style.setProperty(
+          "--bttr-card-width",
+          `${changes.largeCardWidth.newValue}px`
+        );
       }
     }
 
@@ -87,6 +98,13 @@ async function initBodyAttributes() {
 
   if (storageSync.largeCardBack) {
     document.body.setAttribute("bttr-large-cards", "");
+  }
+
+  if (storageSync.largeCardWidth) {
+    document.body.style.setProperty(
+      "--bttr-card-width",
+      `${storageSync.largeCardWidth}px`
+    );
   }
 
   if (storageSync.useLegacyMarkdownEditor) {
