@@ -43,6 +43,23 @@ async function addOnChangeStorageListener() {
       }
     }
 
+    if (changes.enlargeLists) {
+      if (changes.enlargeLists.newValue) {
+        document.body.setAttribute("bttr-list-width", "");
+      } else {
+        document.body.removeAttribute("bttr-list-width");
+      }
+    }
+
+    if (changes.listWidth) {
+      if (changes.listWidth.newValue) {
+        document.body.style.setProperty(
+          "--bttr-list-width",
+          `${changes.listWidth.newValue}px`
+        );
+      }
+    }
+
     if (changes.autoHideTopBar) {
       if (changes.autoHideTopBar.newValue) {
         document.body.setAttribute("bttr-hide-topbar", "");
@@ -104,6 +121,17 @@ async function initBodyAttributes() {
     document.body.style.setProperty(
       "--bttr-card-width",
       `${storageSync.cardWidth}px`
+    );
+  }
+
+  if (storageSync.enlargeLists) {
+    document.body.setAttribute("bttr-list-width", "");
+  }
+
+  if (storageSync.listWidth) {
+    document.body.style.setProperty(
+      "--bttr-list-width",
+      `${storageSync.listWidth}px`
     );
   }
 

@@ -7,7 +7,7 @@
 
 [bttr-large-cards] #layer-manager-card-back [role="dialog"] {
   width: var(--bttr-card-width, 1024px);
-  min-width: 1024px;
+  min-width: 768px;
   max-width: 100%;
 }
 
@@ -47,7 +47,8 @@
 /* Feature: List Width */
 /* ------------------- */
 [bttr-list-width] #board > li > div {
-  width: var(--list-width, 272px);
+  width: var(--bttr-list-width, 320px);
+  min-width: 272px;
 }
 
 /* --------------------- */

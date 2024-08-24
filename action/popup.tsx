@@ -81,6 +81,44 @@ function Popup() {
             </AccordionItem>
           </Accordion>
 
+          <Accordion type="single" collapsible>
+            <AccordionItem value="large-card">
+              <AccordionTrigger>
+                <label className="dark:text-white text-sm leading-none pr-2">
+                  Enlarge Lists
+                </label>
+
+                <Switch
+                  className="ml-auto"
+                  defaultChecked={storageSyncQuery.data?.enlargeLists}
+                  onCheckedChange={(checked) => {
+                    browser.storage.sync.set({ enlargeLists: checked });
+                  }}
+                  onClick={(event) => event.stopPropagation()}
+                />
+              </AccordionTrigger>
+
+              <AccordionContent>
+                <fieldset className=" flex flex-col">
+                  <div className="flex flex-col gap-2">
+                    <Label>List width (px)</Label>
+
+                    <Input
+                      type="number"
+                      placeholder="320"
+                      defaultValue={storageSyncQuery.data?.listWidth}
+                      onChange={(event) => {
+                        browser.storage.sync.set({
+                          listWidth: event.target.value,
+                        });
+                      }}
+                    />
+                  </div>
+                </fieldset>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
           <div className="flex items-center justify-between">
             <label className="dark:text-white text-sm leading-none pr-2">
               Use legacy markdown editor
