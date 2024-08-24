@@ -7,19 +7,21 @@ export const queryKeys = {
 };
 
 export const storageSyncKeys = [
-  "largeCardBack",
-  "largeCardWidth",
+  "enlargeCardBack",
+  "cardWidth",
   "useLegacyMarkdownEditor",
   "autoHideTopBar",
+  "enlargeLists",
   "listWidth",
   "showCardId",
 ];
 
 export type StorageSync = {
-  largeCardBack: boolean;
-  largeCardWidth: number;
+  enlargeCardBack: boolean;
+  cardWidth: number;
   useLegacyMarkdownEditor: boolean;
   autoHideTopBar: boolean;
+  enlargeLists: boolean;
   listWidth: number;
   showCardId: boolean;
 };

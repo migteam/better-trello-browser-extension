@@ -47,14 +47,14 @@ function Popup() {
             <AccordionItem value="large-card">
               <AccordionTrigger>
                 <label className="dark:text-white text-sm leading-none pr-2">
-                  Enlarge Card View
+                  Enlarge Card Back
                 </label>
 
                 <Switch
                   className="ml-auto"
-                  defaultChecked={storageSyncQuery.data?.largeCardBack}
+                  defaultChecked={storageSyncQuery.data?.enlargeCardBack}
                   onCheckedChange={(checked) => {
-                    browser.storage.sync.set({ largeCardBack: checked });
+                    browser.storage.sync.set({ enlargeCardBack: checked });
                   }}
                   onClick={(event) => event.stopPropagation()}
                 />
@@ -68,10 +68,10 @@ function Popup() {
                     <Input
                       type="number"
                       placeholder="1024"
-                      defaultValue={storageSyncQuery.data?.largeCardWidth}
+                      defaultValue={storageSyncQuery.data?.cardWidth}
                       onChange={(event) => {
                         browser.storage.sync.set({
-                          largeCardWidth: event.target.value,
+                          cardWidth: event.target.value,
                         });
                       }}
                     />

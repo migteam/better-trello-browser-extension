@@ -26,19 +26,19 @@ async function addOnChangeStorageListener() {
   const storageSync = await getStorageSync();
 
   browser.storage.onChanged.addListener((changes) => {
-    if (changes.largeCardBack) {
-      if (changes.largeCardBack.newValue) {
+    if (changes.enlargeCardBack) {
+      if (changes.enlargeCardBack.newValue) {
         document.body.setAttribute("bttr-large-cards", "");
       } else {
         document.body.removeAttribute("bttr-large-cards");
       }
     }
 
-    if (changes.largeCardWidth) {
-      if (changes.largeCardWidth.newValue) {
+    if (changes.cardWidth) {
+      if (changes.cardWidth.newValue) {
         document.body.style.setProperty(
           "--bttr-card-width",
-          `${changes.largeCardWidth.newValue}px`
+          `${changes.cardWidth.newValue}px`
         );
       }
     }
@@ -96,14 +96,14 @@ async function addOnChangeStorageListener() {
 async function initBodyAttributes() {
   const storageSync = await getStorageSync();
 
-  if (storageSync.largeCardBack) {
+  if (storageSync.enlargeCardBack) {
     document.body.setAttribute("bttr-large-cards", "");
   }
 
-  if (storageSync.largeCardWidth) {
+  if (storageSync.cardWidth) {
     document.body.style.setProperty(
       "--bttr-card-width",
-      `${storageSync.largeCardWidth}px`
+      `${storageSync.cardWidth}px`
     );
   }
 
