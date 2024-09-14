@@ -21,6 +21,15 @@
   box-sizing: border-box;
 }
 
+[bttr-large-cards]
+  #layer-manager-card-back:has([aria-labelledby="card-back-name"])
+  [role="dialog"]
+  > div
+  > div
+  > div:nth-child(2) {
+  grid-template-columns: [main] 80% [sidebar] minmax(0, 1fr);
+}
+
 [bttr-large-cards] .card-detail-window .button-link-container,
 [bttr-large-cards] .card-detail-window .button-link {
   max-width: unset;
