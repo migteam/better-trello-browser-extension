@@ -13,6 +13,7 @@ import { Label } from "../components/label";
 import { Input } from "../components/input";
 
 import manifest from "../manifest.json";
+import { WarningDiamond } from "@phosphor-icons/react/dist/ssr/WarningDiamond";
 
 let browser: typeof chrome;
 
@@ -99,7 +100,7 @@ function Popup() {
               </AccordionTrigger>
 
               <AccordionContent>
-                <fieldset className=" flex flex-col">
+                <fieldset className="flex flex-col">
                   <div className="flex flex-col gap-2">
                     <Label>List width (px)</Label>
 
@@ -119,18 +120,40 @@ function Popup() {
             </AccordionItem>
           </Accordion>
 
-          <div className="flex items-center justify-between">
-            <label className="dark:text-white text-sm leading-none pr-2">
-              Use legacy markdown editor
-            </label>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="legacy-markdown">
+              <AccordionTrigger>
+                <label className="dark:text-white text-sm leading-none pr-2 flex items-center">
+                  <span>Use legacy markdown editor</span>
+                  <WarningDiamond
+                    size={14}
+                    weight="bold"
+                    className="text-orange-400 ml-1.5"
+                  />
+                </label>
 
-            <Switch
-              defaultChecked={storageSyncQuery.data?.useLegacyMarkdownEditor}
-              onCheckedChange={(checked) => {
-                browser.storage.sync.set({ useLegacyMarkdownEditor: checked });
-              }}
-            />
-          </div>
+                <Switch
+                  className="ml-auto"
+                  defaultChecked={
+                    storageSyncQuery.data?.useLegacyMarkdownEditor
+                  }
+                  onCheckedChange={(checked) => {
+                    browser.storage.sync.set({
+                      useLegacyMarkdownEditor: checked,
+                    });
+                  }}
+                  onClick={(event) => event.stopPropagation()}
+                />
+              </AccordionTrigger>
+
+              <AccordionContent className="bg-orange-200 dark:bg-orange-800">
+                <p className="dark:text-white text-xs">
+                  As of September 2024, mentions might not work properly with
+                  the legacy markdown editor due to recent changes.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
           <div className="flex items-center justify-between">
             <label className="dark:text-white text-sm leading-none pr-2">
