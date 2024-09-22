@@ -1,4 +1,6 @@
 import { StorageSync, storageSyncKeys } from "../queries/storage";
+import TurndownService from "turndown";
+import { Marked } from "marked";
 
 setTimeout(initBodyAttributes, 500);
 setTimeout(addOnChangeStorageListener, 500);
@@ -178,27 +180,77 @@ async function initial() {
 }
 
 function useLegacyMarkdownEditor() {
+  const turndownService = new TurndownService();
+  turndownService.addRule("ignoreProseMirrorTrailingBreak", {
+    filter: (node) =>
+      node.classList.contains("ProseMirror-trailingBreak") ||
+      node.classList.contains("ProseMirror-widget"),
+    replacement: () => "",
+  });
+
+  const marked = new Marked({
+    async: true,
+    breaks: true,
+  });
+
   const targetNode = document.getElementById("layer-manager-card-back");
 
   const config = {
     childList: true,
-    subtree: false,
+    subtree: true,
   };
 
   const callback = function (mutationsList: any, observer: any) {
-    for (let mutation of mutationsList) {
-      if (mutation.type === "childList") {
-        mutation.addedNodes.forEach((node: any) => {
-          setTimeout(() => {
-            node
-              .querySelectorAll("textarea[readonly]")
-              .forEach((textarea: any) => {
-                textarea.readOnly = false;
-              });
-          }, 1000);
-        });
+    window.requestAnimationFrame(() => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === "childList") {
+          mutation.addedNodes.forEach((node: any) => {
+            if (node.tagName === "DIV") {
+              setTimeout(() => {
+                node
+                  .querySelectorAll("textarea[readonly]")
+                  .forEach((textarea: any) => {
+                    textarea.readOnly = false;
+                  });
+              }, 1000);
+
+              node
+                .querySelectorAll(".ProseMirror")
+                .forEach((element: HTMLDivElement) => {
+                  const markdownContent = turndownService.turndown(
+                    element.innerHTML
+                  );
+
+                  const textarea = document.createElement("textarea");
+
+                  textarea.value = markdownContent;
+                  textarea.className = "bttr-markdown-editor";
+
+                  textarea.addEventListener("change", async (event) => {
+                    element.innerHTML = await marked.parse(textarea.value);
+                  });
+
+                  textarea.addEventListener("keydown", async (event) => {
+                    handleMarkdownKeyboardShortcuts(textarea, event);
+                    element.innerHTML = await marked.parse(textarea.value);
+                  });
+
+                  const editorWrapper =
+                    element.closest(".akEditor")?.parentNode;
+                  const hasMarkdownEditor = !!editorWrapper?.querySelector(
+                    ".bttr-markdown-editor"
+                  );
+
+                  if (editorWrapper && !hasMarkdownEditor) {
+                    editorWrapper.insertBefore(textarea, null);
+                    textarea.focus();
+                  }
+                });
+            }
+          });
+        }
       }
-    }
+    });
   };
 
   const observer = new MutationObserver(callback);
@@ -230,4 +282,107 @@ function showCardId() {
       anchor.prepend(span);
     }
   });
+}
+function handleMarkdownKeyboardShortcuts(
+  textarea: HTMLTextAreaElement,
+  event: KeyboardEvent
+) {
+  const isCtrlOrCmd = event.ctrlKey || event.metaKey;
+
+  // Ctrl/Cmd + B for Bold (**text**)
+  if (isCtrlOrCmd && event.key === "b") {
+    event.preventDefault();
+    toggleWrapSelectedText(textarea, "**");
+  }
+
+  // Ctrl/Cmd + I for Italic (*text*)
+  else if (isCtrlOrCmd && event.key === "i") {
+    event.preventDefault();
+    toggleWrapSelectedText(textarea, "*");
+  }
+
+  // Ctrl/Cmd + Alt + 1 for H1 (# Heading)
+  else if (isCtrlOrCmd && event.altKey && event.key === "1") {
+    event.preventDefault();
+    toggleInsertAtStartOfLine(textarea, "# ");
+  }
+
+  // Ctrl/Cmd + Alt + 2 for H2 (## Heading)
+  else if (isCtrlOrCmd && event.altKey && event.key === "2") {
+    event.preventDefault();
+    toggleInsertAtStartOfLine(textarea, "## ");
+  }
+
+  // Ctrl/Cmd + Alt + 3 for H3 (### Heading)
+  else if (isCtrlOrCmd && event.altKey && event.key === "3") {
+    event.preventDefault();
+    toggleInsertAtStartOfLine(textarea, "### ");
+  }
+
+  textarea.dispatchEvent(new Event("change"));
+}
+
+function toggleWrapSelectedText(
+  textarea: HTMLTextAreaElement,
+  wrapper: string,
+  wrapperEnd = wrapper
+) {
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  let selectedText = textarea.value.substring(start, end);
+
+  const hasWrapper =
+    selectedText.startsWith(wrapper) && selectedText.endsWith(wrapperEnd);
+
+  if (hasWrapper) {
+    // Remove the wrapper
+    selectedText = selectedText.substring(
+      wrapper.length,
+      selectedText.length - wrapperEnd.length
+    );
+    textarea.setRangeText(selectedText);
+    // Adjust selection
+    textarea.selectionStart = start;
+    textarea.selectionEnd = start + selectedText.length;
+  } else {
+    // Add the wrapper
+    const newText = wrapper + selectedText + wrapperEnd;
+    textarea.setRangeText(newText);
+    // Adjust selection
+    textarea.selectionStart = start + wrapper.length;
+    textarea.selectionEnd = end + wrapper.length;
+  }
+}
+
+function toggleInsertAtStartOfLine(
+  textarea: HTMLTextAreaElement,
+  prefix: string
+) {
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const value = textarea.value;
+
+  const lineStart = value.lastIndexOf("\n", start - 1) + 1;
+  let lineEnd = value.indexOf("\n", end);
+  if (lineEnd === -1) lineEnd = value.length;
+
+  let lineText = value.substring(lineStart, lineEnd);
+
+  if (lineText.startsWith(prefix)) {
+    // Remove the prefix
+    lineText = lineText.substring(prefix.length);
+    textarea.setRangeText(lineText, lineStart, lineEnd);
+    // Adjust selection
+    const offset = prefix.length;
+    textarea.selectionStart = start - offset;
+    textarea.selectionEnd = end - offset;
+  } else {
+    // Add the prefix
+    lineText = prefix + lineText;
+    textarea.setRangeText(lineText, lineStart, lineEnd);
+    // Adjust selection
+    const offset = prefix.length;
+    textarea.selectionStart = start + offset;
+    textarea.selectionEnd = end + offset;
+  }
 }
