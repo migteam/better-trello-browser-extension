@@ -6,6 +6,8 @@ setTimeout(initBodyAttributes, 500);
 setTimeout(addOnChangeStorageListener, 500);
 setTimeout(initial, 1500);
 
+setTimeout(fetchLists, 1500);
+
 let browser: typeof chrome;
 
 async function getStorageSync() {
@@ -24,8 +26,6 @@ async function addOnChangeStorageListener() {
   if (typeof browser === "undefined") {
     browser = chrome;
   }
-
-  const storageSync = await getStorageSync();
 
   browser.storage.onChanged.addListener((changes) => {
     if (changes.enlargeCardBack) {
@@ -441,4 +441,46 @@ function handleKeyboardEvent(event: Event) {
   if (!authorizedKeys.includes(keyboardEvent.key)) {
     keyboardEvent.stopImmediatePropagation();
   }
+}
+
+async function fetchLists() {
+  if (typeof browser === "undefined") {
+    browser = chrome;
+  }
+
+  const { lists } = await getStorageSync();
+
+  let newLists = [...(lists || [])];
+
+  document.querySelectorAll("[data-testid=list-wrapper]").forEach((list) => {
+    const listId = list.getAttribute("data-list-id");
+    const listName = list.querySelector("[data-testid=list-name]")?.textContent;
+    const boardName = document.querySelector(
+      "[data-testid=board-name-display]"
+    )?.textContent;
+
+    if (!listId || !listName || !boardName) return;
+
+    const existingAtIndex = newLists.findIndex(
+      (list) => list.listId === listId
+    );
+
+    if (existingAtIndex !== -1) {
+      newLists[existingAtIndex] = {
+        listId,
+        listName,
+        boardName,
+      };
+    } else {
+      newLists.push({
+        listId,
+        listName,
+        boardName,
+      });
+    }
+  });
+
+  browser.storage.sync.set({
+    lists: newLists,
+  });
 }

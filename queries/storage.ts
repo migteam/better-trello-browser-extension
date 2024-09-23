@@ -15,7 +15,16 @@ export const storageSyncKeys = [
   "listWidth",
   "showCardId",
   "disableKeyboardShortcuts",
+  "lists",
+  "showAddToTrello",
 ];
+
+export type TrelloList = {
+  listId: string;
+  listName: string;
+  boardName: string;
+  isDefault?: boolean;
+};
 
 export type StorageSync = {
   enlargeCardBack: boolean;
@@ -26,6 +35,8 @@ export type StorageSync = {
   listWidth: number;
   showCardId: boolean;
   disableKeyboardShortcuts: boolean;
+  lists: TrelloList[];
+  showAddToTrello: boolean;
 };
 
 export function useStorageSyncQuery(options?: {

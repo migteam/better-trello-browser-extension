@@ -1,5 +1,4 @@
 import Logo from "../components/logo";
-import React from "react";
 import { useStorageSyncQuery } from "../queries/storage";
 
 import { Switch } from "../components/switch";
@@ -11,14 +10,16 @@ import {
 } from "../components/accordion";
 import { Label } from "../components/label";
 import { Input } from "../components/input";
+import { AddToTrello } from "../components/add-to-trello";
+
+import { WarningDiamond } from "@phosphor-icons/react/dist/ssr/WarningDiamond";
 
 import manifest from "../manifest.json";
-import { WarningDiamond } from "@phosphor-icons/react/dist/ssr/WarningDiamond";
 
 let browser: typeof chrome;
 
 function Popup() {
-  let storageSyncQuery = useStorageSyncQuery({ useCache: false });
+  const storageSyncQuery = useStorageSyncQuery({ useCache: false });
 
   if (typeof browser === "undefined") {
     browser = chrome;
@@ -43,7 +44,9 @@ function Popup() {
       </header>
 
       <div className="p-3">
-        <fieldset className="flex flex-col gap-2">
+        {(storageSyncQuery.data?.showAddToTrello ?? true) && <AddToTrello />}
+
+        <fieldset className="flex flex-col gap-2 mt-3">
           <Accordion type="single" collapsible>
             <AccordionItem value="large-card">
               <AccordionTrigger>
@@ -177,6 +180,20 @@ function Popup() {
               defaultChecked={storageSyncQuery.data?.showCardId}
               onCheckedChange={(checked) => {
                 browser.storage.sync.set({ showCardId: checked });
+              }}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="dark:text-white text-sm leading-none pr-2">
+              Show Add to Trello button
+            </label>
+
+            <Switch
+              defaultChecked={storageSyncQuery.data?.showAddToTrello ?? true}
+              onCheckedChange={(checked) => {
+                browser.storage.sync.set({ showAddToTrello: checked });
+                storageSyncQuery.refetch();
               }}
             />
           </div>

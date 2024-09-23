@@ -3,14 +3,10 @@
   "version": "1.4",
   "name": "Better Trello",
   "permissions": [
+    "tabs",
     "storage"
   ],
   "description": "Better Trello is a browser extension that enhances the Trello experience.",
-  "background": {
-    "scripts": [
-      "./background.ts"
-    ]
-  },
   "action": {
     "default_popup": "./action/index.html",
     "default_title": "Better Trello"
