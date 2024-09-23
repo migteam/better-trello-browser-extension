@@ -170,12 +170,40 @@ async function initial() {
       }
     });
 
-    document.querySelectorAll("[data-testid=list-cards]").forEach((node) =>
-      observer.observe(node, {
-        childList: true,
-        subtree: true,
-      })
-    );
+    if (document.querySelector(".board-canvas")) {
+      document.querySelectorAll("[data-testid=list-cards]").forEach((node) =>
+        observer.observe(node, {
+          childList: true,
+          subtree: true,
+        })
+      );
+    } else {
+      const boardCanvasObserver = new MutationObserver((mutationsList) => {
+        for (let mutation of mutationsList) {
+          if (mutation.type === "childList") {
+            if (mutation.addedNodes.length > 0) {
+              document
+                .querySelectorAll("[data-testid=list-cards]")
+                .forEach((node) =>
+                  observer.observe(node, {
+                    childList: true,
+                    subtree: true,
+                  })
+                );
+            }
+          }
+        }
+      });
+
+      const boardMainContent = document.querySelector(".board-main-content");
+
+      if (boardMainContent) {
+        boardCanvasObserver.observe(boardMainContent, {
+          childList: true,
+          subtree: true,
+        });
+      }
+    }
   }
 }
 
