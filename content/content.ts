@@ -109,6 +109,16 @@ async function addOnChangeStorageListener() {
         });
       }
     }
+
+    if (changes.disableKeyboardShortcuts) {
+      if (changes.disableKeyboardShortcuts.newValue) {
+        window.addEventListener("keydown", handleKeyboardEvent, true);
+        window.addEventListener("keypress", handleKeyboardEvent, true);
+      } else {
+        window.removeEventListener("keydown", handleKeyboardEvent, true);
+        window.removeEventListener("keypress", handleKeyboardEvent, true);
+      }
+    }
   });
 }
 
@@ -204,6 +214,11 @@ async function initial() {
         });
       }
     }
+  }
+
+  if (storageSync.disableKeyboardShortcuts) {
+    window.addEventListener("keydown", handleKeyboardEvent, true);
+    window.addEventListener("keypress", handleKeyboardEvent, true);
   }
 }
 
@@ -412,5 +427,18 @@ function toggleInsertAtStartOfLine(
     const offset = prefix.length;
     textarea.selectionStart = start + offset;
     textarea.selectionEnd = end + offset;
+  }
+}
+
+// Credits to https://github.com/SosthenG/trello-shortcut-killer
+// for the original implementation of this function
+function handleKeyboardEvent(event: Event) {
+  const authorizedKeys = ["Escape", "Enter", "Tab"];
+  const keyboardEvent = event as KeyboardEvent;
+
+  if ((keyboardEvent.target as HTMLElement)?.tagName === "TEXTAREA") return;
+
+  if (!authorizedKeys.includes(keyboardEvent.key)) {
+    keyboardEvent.stopImmediatePropagation();
   }
 }

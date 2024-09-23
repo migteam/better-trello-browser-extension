@@ -180,6 +180,19 @@ function Popup() {
               }}
             />
           </div>
+
+          <div className="flex items-center justify-between">
+            <label className="dark:text-white text-sm leading-none pr-2">
+              Disable Trello keyboard shortcuts
+            </label>
+
+            <Switch
+              defaultChecked={storageSyncQuery.data?.disableKeyboardShortcuts}
+              onCheckedChange={(checked) => {
+                browser.storage.sync.set({ disableKeyboardShortcuts: checked });
+              }}
+            />
+          </div>
         </fieldset>
 
         <small className="flex-row text-xs flex gap-1 mt-3 dark:text-white/40 text-black/40">

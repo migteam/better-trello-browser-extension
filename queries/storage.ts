@@ -14,6 +14,7 @@ export const storageSyncKeys = [
   "enlargeLists",
   "listWidth",
   "showCardId",
+  "disableKeyboardShortcuts",
 ];
 
 export type StorageSync = {
@@ -24,6 +25,7 @@ export type StorageSync = {
   enlargeLists: boolean;
   listWidth: number;
   showCardId: boolean;
+  disableKeyboardShortcuts: boolean;
 };
 
 export function useStorageSyncQuery(options?: {
