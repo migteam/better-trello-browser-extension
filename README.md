@@ -1,15 +1,40 @@
-# Better Trello 🚀
+# Better Trello
 
-Welcome to the **Better Trello** repository! This browser extension is designed to enhance Trello user experience by providing a range of UI/UX improvements.
+![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/dnhdnenpngcecekbhklemaidbdpibiae)
+![Mozilla Add-on Version](https://img.shields.io/amo/v/better-trello)
+
+This browser extension is designed to enhance Trello user experience by providing a range of UI/UX improvements.
+
+#### Features
+
+1. Larger Card View
+2. Visible Card IDs
+3. Legacy Markdown Editor
+4. Auto-hiding Top Bar
+5. Larger Lists
+6. Add to Trello
+7. Disabling Trello keyboard shortcuts
+8. Lists card count
 
 ![Extension preview](https://addons.mozilla.org/user-media/previews/full/303/303839.png?modified=1723811206)
 
-## Supported features
+## Development Guide
 
-- **Larger Card View:** View more content on your cards with an expanded card size.
-- **Visible Card IDs:** Quickly reference cards with visible IDs on each card.
-- **Legacy Markdown Editor:** Switch back to the classic Markdown editor for a more streamlined editing experience.
-- **Hide Top Bar:** Clean up your workspace by hiding the top navigation bar.
+This extension has been created with [Extension.js](https://extension.js.org/).
+
+### Installing
+
+To install extension and all dependencies, run this command:
+
+> npm install
+
+### Running in development mode
+
+To run extension in development mode, start process with command:
+
+> npm run dev
+
+Recommended: [Extension.js Guide](https://extension.js.org/docs/guides/commands/dev).
 
 ## Installation
 
