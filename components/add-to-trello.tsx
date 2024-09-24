@@ -41,7 +41,10 @@ export function AddToTrello() {
           alt={tab?.title}
         />
 
-        <span className="text-sm font-medium shrink-0">{tab?.title}</span>
+        <span className="text-sm font-medium truncate shrink-0">
+          {tab?.title}
+        </span>
+
         <span className="text-sm opacity-40 truncate min-w-0">{tab?.url}</span>
       </div>
 
@@ -80,7 +83,7 @@ export function AddToTrello() {
               </Button>
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="shadow-xl shadow-black/20 bg-gray-100 dark:bg-gray-900 rounded-md overflow-auto p-2 dark:text-white max-h-[200px] max-w-[360px] -translate-x-3">
+              <Popover.Content className="shadow-xl shadow-black/20 bg-gray-100 dark:bg-gray-900 rounded-md overflow-auto p-2 dark:text-white max-h-[220px] max-w-[360px] -translate-x-3">
                 <div className="flex flex-col gap-1.5 w-full">
                   {lists.map((list) => (
                     <div
