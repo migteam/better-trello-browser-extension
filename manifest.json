@@ -11,6 +11,11 @@
     "default_popup": "./action/index.html",
     "default_title": "Better Trello"
   },
+  "background": {
+    "scripts": [
+      "./background/background.ts"
+    ]
+  },
   "content_scripts": [
     {
       "matches": [
