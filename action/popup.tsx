@@ -210,6 +210,19 @@ function Popup() {
               }}
             />
           </div>
+
+          <div className="flex items-center justify-between">
+            <label className="dark:text-white text-sm leading-none pr-2">
+              Show lists card count
+            </label>
+
+            <Switch
+              defaultChecked={storageSyncQuery.data?.showListsCardCount}
+              onCheckedChange={(checked) => {
+                browser.storage.sync.set({ showListsCardCount: checked });
+              }}
+            />
+          </div>
         </fieldset>
 
         <small className="flex-row text-xs flex gap-1 mt-3 dark:text-white/40 text-black/40">

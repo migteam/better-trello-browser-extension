@@ -119,6 +119,23 @@ async function addOnChangeStorageListener() {
         window.removeEventListener("keypress", handleKeyboardEvent, true);
       }
     }
+
+    if (changes.showListsCardCount) {
+      if (changes.showListsCardCount.newValue) {
+        document.body.setAttribute("bttr-show-lists-card-count", "");
+
+        showListsCardCount();
+      } else {
+        document.body.removeAttribute("bttr-show-lists-card-count");
+        document.querySelectorAll(".list-card-count").forEach((element) => {
+          element.parentElement?.parentElement?.removeAttribute(
+            "bttr-list-card-count"
+          );
+
+          element.remove();
+        });
+      }
+    }
   });
 }
 
@@ -157,6 +174,10 @@ async function initBodyAttributes() {
 
   if (storageSync.showCardId) {
     document.body.setAttribute("bttr-show-card-id", "");
+  }
+
+  if (storageSync.showListsCardCount) {
+    document.body.setAttribute("bttr-show-lists-card-count", "");
   }
 }
 
@@ -219,6 +240,55 @@ async function initial() {
   if (storageSync.disableKeyboardShortcuts) {
     window.addEventListener("keydown", handleKeyboardEvent, true);
     window.addEventListener("keypress", handleKeyboardEvent, true);
+  }
+
+  if (storageSync.showListsCardCount) {
+    showListsCardCount();
+
+    const observer = new MutationObserver((mutationsList) => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === "childList") {
+          if (mutation.addedNodes.length > 0) {
+            showListsCardCount();
+          }
+        }
+      }
+    });
+
+    if (document.querySelector(".board-canvas")) {
+      document.querySelectorAll("[data-testid=list-cards]").forEach((node) =>
+        observer.observe(node, {
+          childList: true,
+          subtree: true,
+        })
+      );
+    } else {
+      const boardCanvasObserver = new MutationObserver((mutationsList) => {
+        for (let mutation of mutationsList) {
+          if (mutation.type === "childList") {
+            if (mutation.addedNodes.length > 0) {
+              document
+                .querySelectorAll("[data-testid=list-cards]")
+                .forEach((node) =>
+                  observer.observe(node, {
+                    childList: true,
+                    subtree: true,
+                  })
+                );
+            }
+          }
+        }
+      });
+
+      const boardMainContent = document.querySelector(".board-main-content");
+
+      if (boardMainContent) {
+        boardCanvasObserver.observe(boardMainContent, {
+          childList: true,
+          subtree: true,
+        });
+      }
+    }
   }
 }
 
@@ -326,6 +396,7 @@ function showCardId() {
     }
   });
 }
+
 function handleMarkdownKeyboardShortcuts(
   textarea: HTMLTextAreaElement,
   event: KeyboardEvent
@@ -482,5 +553,33 @@ async function fetchLists() {
 
   browser.storage.sync.set({
     lists: newLists,
+  });
+}
+
+function showListsCardCount() {
+  const lists = document.querySelectorAll('[data-testid="list"]');
+
+  lists.forEach((list) => {
+    const listHeader = list.querySelector("[data-testid=list-header]");
+    const listCards = list.querySelector("[data-testid=list-cards]");
+
+    const listCardCount = listCards?.childElementCount || 0;
+
+    const span = document.createElement("span");
+    span.className = "list-card-count";
+    span.textContent = `${listCardCount}`;
+
+    if (listHeader) {
+      const collapseButton = listHeader.querySelector("button");
+      const existingSpan = listHeader.querySelector("span.list-card-count");
+
+      if (existingSpan) {
+        listHeader.replaceChild(span, existingSpan);
+      } else {
+        listHeader.insertBefore(span, collapseButton);
+      }
+
+      list.setAttribute("bttr-list-card-count", String(listCardCount));
+    }
   });
 }

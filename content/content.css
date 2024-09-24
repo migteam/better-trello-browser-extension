@@ -130,3 +130,25 @@ TODO: Uncomment when mentions are working properly
   transform: translateY(180px) !important;
 } 
 */
+
+/* ----------------------------- */
+/* Feature: Show List Card Count */
+/* ----------------------------- */
+span.list-card-count {
+  display: none;
+}
+
+[bttr-show-lists-card-count] span.list-card-count {
+  display: inline;
+  margin-right: 6px;
+  align-self: center;
+  color: var(--ds-surface, #ffffff);
+  font-size: 12px;
+  line-height: 16px;
+  padding: 3px 4px;
+  text-align: center;
+  min-width: 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  background-color: var(--accent-text, var(--ds-icon-subtle, #626f86));
+}

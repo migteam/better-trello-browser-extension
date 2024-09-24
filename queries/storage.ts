@@ -17,6 +17,7 @@ export const storageSyncKeys = [
   "disableKeyboardShortcuts",
   "lists",
   "showAddToTrello",
+  "showListsCardCount",
 ];
 
 export type TrelloList = {
@@ -37,6 +38,7 @@ export type StorageSync = {
   disableKeyboardShortcuts: boolean;
   lists: TrelloList[];
   showAddToTrello: boolean;
+  showListsCardCount: boolean;
 };
 
 export function useStorageSyncQuery(options?: {
