@@ -118,7 +118,7 @@ export function AddToTrello() {
                       </button>
 
                       <div className="grow flex flex-col mr-3">
-                        <span>{list.listName}</span>
+                        <span className="text-xs">{list.listName}</span>
                         <span className="text-[10px] font-medium opacity-65">
                           {list.boardName}
                         </span>
