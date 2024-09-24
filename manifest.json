@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "1.5",
+  "version": "1.6",
   "name": "Better Trello",
   "permissions": [
     "tabs",
