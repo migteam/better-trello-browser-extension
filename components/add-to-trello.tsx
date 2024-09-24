@@ -22,6 +22,7 @@ export function AddToTrello() {
   browser.tabs.query(
     {
       active: true,
+      currentWindow: true,
     },
     function ([tab]) {
       setTab(tab);
