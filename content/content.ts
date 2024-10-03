@@ -346,6 +346,12 @@ function useLegacyMarkdownEditor() {
                   textarea.addEventListener("keydown", async (event) => {
                     handleMarkdownKeyboardShortcuts(textarea, event);
                     element.innerHTML = await marked.parse(textarea.value);
+
+                    // Auto resize the textarea only on Firefox since it doesn't support the `field-sizing: content` CSS property yet (https://bugzilla.mozilla.org/show_bug.cgi?id=1832409)
+                    if (navigator.userAgent.includes("Firefox")) {
+                      textarea.style.height = "";
+                      textarea.style.height = textarea.scrollHeight + "px";
+                    }
                   });
 
                   const editorWrapper =
@@ -356,7 +362,12 @@ function useLegacyMarkdownEditor() {
 
                   if (editorWrapper && !hasMarkdownEditor) {
                     editorWrapper.insertBefore(textarea, null);
+
                     textarea.focus();
+
+                    if (navigator.userAgent.includes("Firefox")) {
+                      textarea.style.height = textarea.scrollHeight + "px";
+                    }
                   }
                 });
             }
