@@ -3,7 +3,7 @@
   "version": "1.7",
   "name": "Better Trello",
   "permissions": [
-    "tabs",
+    "activeTab",
     "storage"
   ],
   "description": "Better Trello is a browser extension that enhances the Trello experience.",
