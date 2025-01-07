@@ -1,5 +1,5 @@
 import Logo from "../components/logo";
-import { useStorageSyncQuery } from "../queries/storage";
+import { useStorageLocalQuery, useStorageSyncQuery } from "../queries/storage";
 
 import { Switch } from "../components/switch";
 import {
@@ -11,8 +11,10 @@ import {
 import { Label } from "../components/label";
 import { Input } from "../components/input";
 import { AddToTrello } from "../components/add-to-trello";
+import { Button } from "@/components/button";
 
 import { WarningDiamond } from "@phosphor-icons/react/dist/ssr/WarningDiamond";
+import { Copy } from "@phosphor-icons/react/dist/ssr";
 
 import manifest from "../manifest.json";
 
@@ -20,6 +22,7 @@ let browser: typeof chrome;
 
 function Popup() {
   const storageSyncQuery = useStorageSyncQuery({ useCache: false });
+  const storageLocalQuery = useStorageLocalQuery({ useCache: false });
 
   if (typeof browser === "undefined") {
     browser = chrome;
@@ -223,6 +226,76 @@ function Popup() {
               }}
             />
           </div>
+
+          <Accordion type="single" collapsible>
+            <AccordionItem value="large-card">
+              <AccordionTrigger>
+                <label className="dark:text-white text-sm leading-none pr-2">
+                  Get Automation Token
+                </label>
+              </AccordionTrigger>
+
+              <AccordionContent>
+                <fieldset className="flex flex-col">
+                  <div className="flex flex-col gap-2">
+                    <Label>Automation Token</Label>
+
+                    <Input
+                      placeholder="No token fetched"
+                      disabled
+                      value={
+                        storageLocalQuery.isFetching
+                          ? "Fetching..."
+                          : storageLocalQuery.data?.butlerToken
+                      }
+                    />
+
+                    {storageLocalQuery.data?.butlerToken ? (
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => {
+                            if (storageLocalQuery.data?.butlerToken) {
+                              navigator.clipboard.writeText(
+                                storageLocalQuery.data?.butlerToken
+                              );
+                            }
+                          }}
+                        >
+                          <Copy className="w-3 h-3" />
+                          Copy to clipboard
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => storageLocalQuery.refetch()}
+                        >
+                          Refresh
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="bg-orange-200 dark:bg-orange-800 flex flex-col gap-2 p-2 rounded-md">
+                        <p className="dark:text-white text-xs">
+                          <strong>To fetch the token</strong>, go to your Trello
+                          board and open the Automation pop-up window and click
+                          Refresh button after.
+                        </p>
+
+                        <Button
+                          size="sm"
+                          variant="tertiary"
+                          onClick={() => storageLocalQuery.refetch()}
+                        >
+                          Refresh
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </fieldset>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </fieldset>
 
         <small className="flex-row text-xs flex gap-1 mt-3 dark:text-white/40 text-black/40">

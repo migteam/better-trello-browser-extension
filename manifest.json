@@ -2,9 +2,10 @@
   "manifest_version": 3,
   "version": "1.8",
   "name": "Better Trello",
-  "permissions": [
-    "activeTab",
-    "storage"
+  "permissions": ["activeTab", "storage", "webRequest"],
+  "host_permissions": [
+    "https://trello.com/*",
+    "https://app.butlerfortrello.com/*"
   ],
   "description": "Better Trello is a browser extension that enhances the Trello experience.",
   "action": {
@@ -12,21 +13,14 @@
     "default_title": "Better Trello"
   },
   "background": {
-    "scripts": [
-      "./background/background.ts"
-    ]
+    "scripts": ["./background/background.ts"],
+    "service_worker": "./background/background.ts"
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://trello.com/*"
-      ],
-      "js": [
-        "./content/content.ts"
-      ],
-      "css": [
-        "./content/content.css"
-      ]
+      "matches": ["https://trello.com/*"],
+      "js": ["./content/content.ts"],
+      "css": ["./content/content.css"]
     }
   ],
   "icons": {
